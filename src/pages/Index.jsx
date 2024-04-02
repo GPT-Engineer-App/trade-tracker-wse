@@ -6,15 +6,20 @@ import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 const Index = () => {
   const [trades, setTrades] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [historicalDate, setHistoricalDate] = useState(new Date("2024-04-02"));
+  const [historicalDate, setHistoricalDate] = useState(new Date("2023-06-15"));
+
+  const sampleData = [
+    { company: "PKN Orlen", symbol: "PKN", price: 58.5, change: 1.24 },
+    { company: "PKO BP", symbol: "PKO", price: 25.8, change: -0.77 },
+    { company: "PZU", symbol: "PZU", price: 32.15, change: 0.94 },
+    { company: "KGHM", symbol: "KGH", price: 95.0, change: -1.55 },
+    { company: "Dino Polska", symbol: "DNP", price: 270.0, change: 2.27 },
+  ];
 
   useEffect(() => {
-    const fetchTrades = async (date) => {
+    const fetchTrades = async () => {
       try {
-        // Simulating API call with sample data
-        const response = await fetch(`https://example.com/api/wse-trades?date=${date.toISOString()}`);
-        const data = await response.json();
-        setTrades(data);
+        setTrades(sampleData);
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching trades:", error);
@@ -22,7 +27,7 @@ const Index = () => {
       }
     };
 
-    fetchTrades(historicalDate);
+    fetchTrades();
 
     // Refresh trades every 30 minutes
     const interval = setInterval(fetchTrades, 30 * 60 * 1000);
