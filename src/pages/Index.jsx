@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
+
 import { Box, Heading, Table, Thead, Tbody, Tr, Th, Td, Image, Spinner, Flex, Text } from "@chakra-ui/react";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 
 const Index = () => {
   const [trades, setTrades] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [historicalDate, setHistoricalDate] = useState(new Date("2024-04-02"));
 
   useEffect(() => {
-    const fetchTrades = async () => {
+    const fetchTrades = async (date) => {
       try {
         // Simulating API call with sample data
-        const response = await fetch("https://example.com/api/wse-trades");
+        const response = await fetch(`https://example.com/api/wse-trades?date=${date.toISOString()}`);
         const data = await response.json();
         setTrades(data);
         setIsLoading(false);
@@ -20,7 +22,7 @@ const Index = () => {
       }
     };
 
-    fetchTrades();
+    fetchTrades(historicalDate);
 
     // Refresh trades every 30 minutes
     const interval = setInterval(fetchTrades, 30 * 60 * 1000);
@@ -73,6 +75,9 @@ const Index = () => {
 
       <Text mt={4} fontSize="sm" color="gray.500">
         Data refreshes every 30 minutes.
+      </Text>
+      <Text mt={2} fontSize="sm" color="gray.500">
+        Historical date: {new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric" }).format(historicalDate)}
       </Text>
     </Box>
   );
